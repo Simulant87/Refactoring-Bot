@@ -1,7 +1,9 @@
-package de.refactoringbot.controller.github;
+package de.refactoringbot.services.github;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.refactoringbot.model.configuration.AnalysisProvider;
+import de.refactoringbot.model.configuration.FileHoster;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -10,17 +12,18 @@ import de.refactoringbot.model.configuration.GitConfiguration;
 import de.refactoringbot.model.configuration.GitConfigurationDTO;
 import de.refactoringbot.model.github.pullrequestcomment.ReplyComment;
 import de.refactoringbot.model.output.botpullrequestcomment.BotPullRequestComment;
+import de.refactoringbot.services.github.GithubObjectTranslator;
 
 public class GithubObjectTranslatorTest {
 
 	private final String repositoryOwner = "testRepositoryOwner";
 	private final String repositoryName = "testRepositoryName";
 	private final String botName = "testBotName";
-	private final String analysisService = "testAnalysisName";
+	private final AnalysisProvider analysisService = AnalysisProvider.sonarqube;
 	private final String botEmail = "testBotEmail";
 	private final String analysisKey = "testAnalysisKey";
 	private final String botToken = "testBotToken";
-	private final String repositoryService = "testRepositoryService";
+	private final FileHoster repositoryService = FileHoster.github;
 	private final Integer maxRequests = 456;
 
 	@Test
@@ -68,7 +71,7 @@ public class GithubObjectTranslatorTest {
 
 	private GitConfiguration createExpectedGitConfiguration() {
 		GitConfiguration gitConfiguration = new GitConfiguration();
-		gitConfiguration.setAnalysisService(analysisService.toLowerCase());
+		gitConfiguration.setAnalysisService(analysisService);
 		gitConfiguration.setAnalysisServiceProjectKey(analysisKey);
 		gitConfiguration.setBotName(botName);
 		gitConfiguration.setBotEmail(botEmail);
